@@ -13,14 +13,14 @@ from .serializers import ExamSerializer, GradeSerializer, UserSerializer
 #####################################################################################
 
 @api_view(['GET', ])
-def exam_view(request, pk):
+def exam_view(request, exam_id):
     """
     Description: Shows an exam
-    Input: Exam ID(pk)
+    Input: Exam ID(exam_id)
     Output: Exam json
     """
     try:
-        exam = Exam.objects.get(pk=pk)
+        exam = Exam.objects.get(pk=exam_id)
     except Exam.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -29,14 +29,14 @@ def exam_view(request, pk):
         return Response(serializer.data)
 
 @api_view(['GET', ])
-def exam_download_view(request, pk):
+def exam_download_view(request, exam_id):
     """
     Description: Downloads an exam
-    Input: Exam ID(pk)
+    Input: Exam ID(exam_id)
     Output: Exam csv file
     """
     try:
-        exam = Exam.objects.get(pk=pk)
+        exam = Exam.objects.get(pk=exam_id)
     except Exam.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -79,14 +79,14 @@ def exam_search_view(request):
         return Response(serializer.data)
 
 @api_view(['PATCH', ])
-def exam_update_view(request, pk):
+def exam_update_view(request, exam_id):
     """
     Description: Modify description of an exam
-    Input: Data in the request(the description) and Exam ID(pk)
+    Input: Data in the request(the description) and Exam ID(exam_id)
     Output: Exam json
     """
     try:
-        exam = Exam.objects.get(pk=pk)
+        exam = Exam.objects.get(pk=exam_id)
     except Exam.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -100,13 +100,13 @@ def exam_update_view(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE', ])
-def exam_delete_view(request, pk):
+def exam_delete_view(request, exam_id):
     """
     Description: Deletes an exam
-    Input: Exam ID(pk)
+    Input: Exam ID(exam_id)
     """
     try:
-        exam = Exam.objects.get(pk=pk)
+        exam = Exam.objects.get(pk=exam_id)
     except Exam.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -140,14 +140,14 @@ def exam_create_view(request):
 #####################################################################################
 
 @api_view(['GET', ])
-def grade_view(request, exam, user):
+def grade_view(request, exam_id, user_id):
     """
     Description: Shows grade using json
-    Input: Exam ID(exam) and User ID(user)
+    Input: Exam ID(exam_id) and User ID(user_id)
     Output: Grade json
     """
     try:
-        grade = Grade.objects.get(exam=exam, user=user)
+        grade = Grade.objects.get(exam=exam_id, user=user_id)
     except Grade.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -156,14 +156,14 @@ def grade_view(request, exam, user):
         return Response(serializer.data)
 
 @api_view(['GET', ])
-def grade_download_view(request, exam, user):
+def grade_download_view(request, exam_id, user_id):
     """
     Description: Download the grade file of a grade
-    Input: Exam ID(exam) and User ID(user)
+    Input: Exam ID(exam_id) and User ID(user_id)
     Output: Grade csv file
     """
     try:
-        grade = Grade.objects.get(exam=exam, user=user)
+        grade = Grade.objects.get(exam=exam_id, user=user_id)
     except Grade.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -190,14 +190,14 @@ def grade_list_view(request):
         return Response(serializer.data)
 
 @api_view(['GET', ])
-def grade_user_view(request, user):
+def grade_user_view(request, user_id):
     """
     Description: Shows a list of all the grades a particular User has
     Input: User ID (user)
     Output: List of grades json
     """
     try:
-        gradeList = Grade.objects.filter(user=user)
+        gradeList = Grade.objects.filter(user=user_id)
     except Grade.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -206,13 +206,13 @@ def grade_user_view(request, user):
         return Response(serializer.data)
 
 @api_view(['DELETE', ])
-def grade_delete_view(request, exam, user):
+def grade_delete_view(request, exam_id, user_id):
     """
     Description: Deletes a grade
-    Input: Exam ID(exam) and User ID(user)
+    Input: Exam ID(exam_id) and User ID(user_id)
     """
     try:
-        grade = Grade.objects.get(exam=exam, user=user)
+        grade = Grade.objects.get(exam=exam_id, user=user_id)
     except Grade.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
