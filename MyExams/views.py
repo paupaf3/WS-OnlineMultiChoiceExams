@@ -4,9 +4,13 @@ from rest_framework.decorators import api_view
 
 from .models import Exam, User, Grade
 from .serializers import ExamSerializer, GradeSerializer, UserSerializer
+
 '''
-        EXAM
+#####################################################################################
+                                    EXAM
+#####################################################################################
 '''
+
 #GET d'un exam en concret per ID (pk=primary key)
 @api_view(['GET', ])
 def exam_view(request, pk):
@@ -94,8 +98,11 @@ def exam_create_view(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
 
 '''
-        GRADE
+#####################################################################################
+                                    GRADE
+#####################################################################################
 '''
+
 #GET veure notes per id d'examen o id d'usuari 
 @api_view(['GET', ])
 def grade_view(request, exam, user):

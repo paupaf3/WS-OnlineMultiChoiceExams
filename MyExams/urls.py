@@ -21,6 +21,7 @@ urlpatterns = [
     path('exam/<int:pk>/', exam_view, name='exam'),
     path('exam/<int:pk>/delete/', exam_delete_view, name='exam_delete'),
     path('exam/<int:pk>/update/', exam_update_view, name='exam_update'),
+    
     #GRADE
     path('grade/', grade_list_view, name='grade_list'),
     path('grade/upload/', grade_create_view, name='grade_create'),

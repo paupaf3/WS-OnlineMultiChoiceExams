@@ -24,3 +24,5 @@ class Grade(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
     grade_file=models.FileField(upload_to="grade_files/")
     #grade_file=models.FileField(default='example_files/exam_files/nograde.csv')
+    class Meta:
+        unique_together = ('exam', 'user',)
