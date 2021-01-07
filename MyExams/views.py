@@ -1,6 +1,8 @@
+import os
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.http import HttpResponse
 
 from .models import Exam, User, Grade
 from .serializers import ExamSerializer, GradeSerializer, UserSerializer
@@ -23,7 +25,20 @@ def exam_view(request, pk):
         serializer = ExamSerializer(exam)
         return Response(serializer.data)
 
-    #elif request.method == "POST"
+#GET descarga d'un exam en concret per ID (pk=primary key)
+@api_view(['GET', ])
+def exam_download_view(request, pk):
+    try:
+        exam = Exam.objects.get(pk=pk)
+    except Exam.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        file = os.path.basename(exam.exam_file.name)
+        with open("exam_files/"+file, 'r') as file:
+            response = HttpResponse(file, content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=exam_file.csv'
+            return response
 
 #GET de la llista amb tots els examens
 @api_view(['GET', ])
@@ -103,7 +118,7 @@ def exam_create_view(request):
 #####################################################################################
 '''
 
-#GET veure notes per id d'examen o id d'usuari 
+#GET veure nota per id d'examen i id d'usuari 
 @api_view(['GET', ])
 def grade_view(request, exam, user):
     try:
@@ -114,6 +129,21 @@ def grade_view(request, exam, user):
     if request.method == "GET":
         serializer = GradeSerializer(grade)
         return Response(serializer.data)
+
+#GET descargar nota per id d'examen i id d'usuari 
+@api_view(['GET', ])
+def grade_download_view(request, exam, user):
+    try:
+        grade = Grade.objects.get(exam=exam, user=user)
+    except Grade.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        file = os.path.basename(grade.grade_file.name)
+        with open("grade_files/"+file, 'r') as file:
+            response = HttpResponse(file, content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=grade_file.csv'
+            return response
 
 #GET de la llista amb totes les notes
 @api_view(['GET', ])
