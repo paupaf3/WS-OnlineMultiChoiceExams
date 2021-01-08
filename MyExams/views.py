@@ -239,3 +239,25 @@ def grade_create_view(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+#####################################################################################
+                                    #USER
+#####################################################################################
+
+@api_view(['GET', ])
+def user_validate_view(request, user_id):
+    """
+    Description: Validates an User ID
+    Input: User ID(user_id)
+    Output: True/false json
+    """
+    data = {}
+    try:
+        User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        data["false"] = "False"
+        return Response(data=data)
+
+    if request.method == "GET":
+        data["true"] = "True"
+        return Response(data=data)

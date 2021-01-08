@@ -12,7 +12,8 @@ from .views import (
     grade_create_view, 
     grade_user_view, 
     grade_delete_view, 
-    grade_download_view, 
+    grade_download_view,
+    user_validate_view, 
     )
 
 urlpatterns = [
@@ -33,5 +34,10 @@ urlpatterns = [
     path('grade/<int:user_id>/<int:exam_id>/', grade_view, name='grade'),
     path('grade/<int:user_id>/<int:exam_id>/delete/', grade_delete_view, name='grade_delete'),
     path('grade/<int:user_id>/<int:exam_id>/download/', grade_download_view, name='grade_download'),
+
+
+    #USER
+    path('user/validate/<int:user_id>/', user_validate_view, name='user_validate'),
+
 
 ]
