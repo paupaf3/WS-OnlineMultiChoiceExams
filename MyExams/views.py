@@ -1,7 +1,8 @@
 import os
 from rest_framework import status
+from rest_framework.renderers import StaticHTMLRenderer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
 from django.http import HttpResponse
 
 from .models import Exam, User, Grade
@@ -245,19 +246,20 @@ def grade_create_view(request):
 #####################################################################################
 
 @api_view(['GET', ])
+@renderer_classes([StaticHTMLRenderer])
 def user_validate_view(request, user_id):
     """
     Description: Validates an User ID
     Input: User ID(user_id)
     Output: True/false json
     """
-    data = {}
+    data = ""
     try:
         User.objects.get(pk=user_id)
     except User.DoesNotExist:
-        data["false"] = "False"
+        data = "false"
         return Response(data=data)
 
     if request.method == "GET":
-        data["true"] = "True"
+        data = "true"
         return Response(data=data)
